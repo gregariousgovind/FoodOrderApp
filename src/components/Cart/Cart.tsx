@@ -15,7 +15,7 @@ const Cart = (props) => {
   };
 
   const cartItemAddHandler = (item) => {
-    
+
   };
 
   const cartItems = (
@@ -35,11 +35,11 @@ const Cart = (props) => {
   return (
     <Modal onClose={props.onClose}>
       {cartItems}
-      <div className="total">
+      <div className="cart-total">
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      <div className="actions">
+      <div className="cart-actions">
         <button className="button--alt" onClick={props.onClose}>
           Close
         </button>

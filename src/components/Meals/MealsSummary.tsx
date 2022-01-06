@@ -3,7 +3,7 @@ import './MealsSummary.scss';
 
 const MealsSummary = () => {
   return (
-    <section className="summary">
+    <section className="meals-summary">
       <h2>Delicious Food, Delivered To You</h2>
       <p>
         Choose your favorite meal from our broad selection of available meals

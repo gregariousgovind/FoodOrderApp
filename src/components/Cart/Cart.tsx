@@ -86,7 +86,16 @@ const Cart = (props) => {
   );
 
   const isSubmittingModalContent = <p>Sending order request...</p>;
-  const didSubmitModalContent = <p>Order sent...</p>;
+  const didSubmitModalContent = (
+    <React.Fragment>
+      <p>Order sent...</p>
+      <div className="cart-actions">
+        <button className="button" onClick={props.onClose}>
+          Close
+        </button>
+      </div>
+    </React.Fragment>
+  );
   return (
     <Modal onClose={props.onClose}>
       {!isSubmiting && !didSubmit && cartModalContent}

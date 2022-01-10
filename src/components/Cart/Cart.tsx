@@ -8,6 +8,8 @@ import './Cart.scss';
 
 const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
 
   const cartCtx = useContext(CartContext);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -23,6 +25,22 @@ const Cart = (props) => {
 
   const orderHandler = () => {
     setIsCheckout(true);
+  };
+
+  const submitOrderHandler = async (userData) => {
+    setIsSubmiting(true);
+    await fetch(
+      'https://react-meals-c5ead-default-rtdb.firebaseio.com/orders.json',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          user: userData,
+          orderedItems: cartCtx.items,
+        }),
+      }
+    );
+    setIsSubmiting(false);
+    setDidSubmit(true);
   };
 
   const cartItems = (
@@ -53,15 +71,27 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onClose={props.onClose}>
+  const cartModalContent = (
+    <React.Fragment>
       {cartItems}
       <div className="cart-total">
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={props.onClose} />}
+      {isCheckout && (
+        <Checkout onCancel={props.onClose} onConfirm={submitOrderHandler} />
+      )}
       {!isCheckout && modalActions}
+    </React.Fragment>
+  );
+
+  const isSubmittingModalContent = <p>Sending order request...</p>;
+  const didSubmitModalContent = <p>Order sent...</p>;
+  return (
+    <Modal onClose={props.onClose}>
+      {!isSubmiting && !didSubmit && cartModalContent}
+      {isSubmiting && isSubmittingModalContent}
+      {!isSubmiting && didSubmit && didSubmitModalContent}
     </Modal>
   );
 };

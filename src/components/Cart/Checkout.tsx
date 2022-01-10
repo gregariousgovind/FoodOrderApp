@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import './Checkout.scss';
 
 const isEmpty = (value) => value.trim() === '';
@@ -48,21 +48,29 @@ const Checkout = (props) => {
 
   return (
     <form className="meal-form" onSubmit={confirmHandler}>
-      <div className="control">
+      <div className={`control ${!formInputsValidity.name ? 'invalid' : ''}`}>
         <label htmlFor="name">Your Name</label>
         <input type="text" id="name" ref={nameInputRef} />
+        {!formInputsValidity.name && <p>Please enter a valid name!</p>}
       </div>
-      <div className="control">
+      <div className={`control ${!formInputsValidity.street ? 'invalid' : ''}`}>
         <label htmlFor="street">Street</label>
         <input type="text" id="street" ref={streetInputRef} />
+        {!formInputsValidity.street && <p>Please enter a valid street!</p>}
       </div>
-      <div className="control">
+      <div
+        className={`control ${!formInputsValidity.postalCode ? 'invalid' : ''}`}
+      >
         <label htmlFor="postal">Postal Code</label>
         <input type="text" id="postal" ref={postalCodeInputRef} />
+        {!formInputsValidity.postalCode && (
+          <p>Please enter a valid postal code 5 characters long!</p>
+        )}
       </div>
-      <div className="control">
+      <div className={`control ${!formInputsValidity.city ? 'invalid' : ''}`}>
         <label htmlFor="city">City</label>
         <input type="text" id="city" ref={cityInputRef} />
+        {!formInputsValidity.city && <p>Please enter a valid city!</p>}
       </div>
       <div className="actions">
         <button type="button" onClick={props.onCancel}>

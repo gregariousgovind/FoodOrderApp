@@ -6,6 +6,7 @@ import './AvailableMeals.scss';
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoding] = useState(true);
+  const [httpError, setHttpError] = useState(null);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -13,6 +14,11 @@ const AvailableMeals = () => {
         'https://react-meals-c5ead-default-rtdb.firebaseio.com/meals.json',
         {}
       );
+
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+
       const data = await response.json();
       const loadedMeals = [];
       for (const key in data) {
@@ -27,13 +33,24 @@ const AvailableMeals = () => {
       setMeals(loadedMeals);
       setIsLoding(false);
     };
-    fetchMeals();
+
+    fetchMeals().catch((error) => {
+      setIsLoding(false);
+      setHttpError(error.message);
+    });
   }, []);
 
   if (isLoading) {
     return (
       <section className="meals-loading">
         <p>Loading...</p>
+      </section>
+    );
+  }
+  if (httpError) {
+    return (
+      <section className="meals-error">
+        <p>{httpError}</p>
       </section>
     );
   }

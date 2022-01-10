@@ -5,6 +5,13 @@ const isEmpty = (value) => value.trim() === '';
 const isNotFiveChar = (value) => value.trim().length !== 5;
 
 const Checkout = (props) => {
+  const [formInputsValidity, setFormInputsValidity] = useState({
+    name: true,
+    street: true,
+    city: true,
+    postalCode: true,
+  });
+
   const nameInputRef = useRef();
   const streetInputRef = useRef();
   const postalCodeInputRef = useRef();
@@ -21,6 +28,13 @@ const Checkout = (props) => {
     const enteredPostaCodeIsValid = !isNotFiveChar(enteredPostaCode);
     const enteredCityIsValid = !isEmpty(enteredCity);
 
+    setFormInputsValidity({
+      name: enteredNameIsValid,
+      street: enteredStreetIsValid,
+      city: enteredCityIsValid,
+      postalCode: enteredPostaCodeIsValid,
+    });
+
     const formIsValid =
       enteredNameIsValid &&
       enteredStreetIsValid &&
@@ -28,7 +42,7 @@ const Checkout = (props) => {
       enteredCityIsValid;
 
     if (!formIsValid) {
-      
+      return;
     }
   };
 
